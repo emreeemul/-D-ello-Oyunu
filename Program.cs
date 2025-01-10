@@ -11,7 +11,7 @@ namespace Duello
         public int Hasar { get; private set; }  // Silahın verdiği hasar miktarı. 
         public int Savunma { get; private set; } // Silahın sağladığı savunma miktarı.
 
-        public Silah(string ad, int hasar, int savunma) // Kurucu (Constructor): Silah sınıfı için temel özellikleri ayarlayan yapılandırıcı. // Kapsülleme (Encapsulation): Silahın sağladığı savunma yalnızca sınıf içinde ayarlanabilir.
+        public Silah(string ad, int hasar, int savunma) // Kurucu (Constructor): Silah sınıfı için temel özellikleri ayarlayan yapılandırıcı. 
         {
             Ad = ad;
             Hasar = hasar;
