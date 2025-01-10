@@ -43,10 +43,10 @@ namespace Duello
     
     {
         private static Random rastgele = new Random();
-        public IkiliKilic() : base("İkili Kılıç", 100, 0) { }     // İkili Kılıç sınıfı için varsayılan özellikler.
+        public IkiliKilic() : base("İkili Kılıç", 125, 0) { }     // İkili Kılıç sınıfı için varsayılan özellikler.
         public override void OzelEtki(ref int oyuncuCan, ref int rakipCan)
         {
-            if (rastgele.Next(0, 2) == 0)
+            if (rastgele.Next(0, 4) == 3)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("İkili Kılıç: Hasardan kaçınıldı!");
