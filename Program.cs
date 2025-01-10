@@ -7,8 +7,8 @@ namespace Duello
     public abstract class Silah // Bu sınıf tüm silahlar için temel özellikleri ve davranışları sağlar.
      // Soyutlama (Abstraction): Bu sınıf, tüm silahlar için temel özellikleri ve davranışları sağlar.
     {
-        public string Ad { get; private set; } // Silahın adı, yalnızca sınıf içinde ayarlanabilir ve dışarıdan okunabilir. // Kapsülleme (Encapsulation): Silahın adı yalnızca sınıf içinde ayarlanabilir ve dışarıdan okunabilir.
-        public int Hasar { get; private set; }  // Silahın verdiği hasar miktarı. // Kapsülleme (Encapsulation): Silahın verdiği hasar yalnızca sınıf içinde ayarlanabilir.
+        public string Ad { get; private set; } // Silahın adı, yalnızca sınıf içinde ayarlanabilir ve dışarıdan okunabilir. 
+        public int Hasar { get; private set; }  // Silahın verdiği hasar miktarı. 
         public int Savunma { get; private set; } // Silahın sağladığı savunma miktarı.
 
         public Silah(string ad, int hasar, int savunma) // Kurucu (Constructor): Silah sınıfı için temel özellikleri ayarlayan yapılandırıcı. // Kapsülleme (Encapsulation): Silahın sağladığı savunma yalnızca sınıf içinde ayarlanabilir.
@@ -27,8 +27,8 @@ namespace Duello
         public abstract void OzelEtki(ref int oyuncuCan, ref int rakipCan);
     }
 
-    public class Balta : Silah // Kalıtım (Inheritance): Balta sınıfı, Silah sınıfından türetilmiştir.
-                               // Kurucu (Constructor): Balta sınıfı için varsayılan özellikler.
+    public class Balta : Silah 
+    
     {
         public Balta() : base("Balta", 150, 0) { } // Balta sınıfı için varsayılan özellikler.
         public override void OzelEtki(ref int oyuncuCan, ref int rakipCan) { }
@@ -39,8 +39,8 @@ namespace Duello
         }
     }
 
-    public class IkiliKilic : Silah // Kalıtım (Inheritance): İkili Kılıç sınıfı, Silah sınıfından türetilmiştir.
-                                    // Kurucu (Constructor): İkili Kılıç sınıfı için varsayılan özellikler.
+    public class IkiliKilic : Silah 
+    
     {
         private static Random rastgele = new Random();
         public IkiliKilic() : base("İkili Kılıç", 100, 0) { }     // İkili Kılıç sınıfı için varsayılan özellikler.
@@ -60,8 +60,8 @@ namespace Duello
         }
     }
 
-    public class TopuzVeKalkan : Silah // Kalıtım (Inheritance): Topuz ve Kalkan sınıfı, Silah sınıfından türetilmiştir.
-                                       // Kurucu (Constructor): Topuz ve Kalkan sınıfı için varsayılan özellikler.
+    public class TopuzVeKalkan : Silah 
+    
     {
         public TopuzVeKalkan() : base("Topuz ve Kalkan", 100, 50) { } // Topuz ve Kalkan sınıfı için varsayılan özellikler.
         public override void OzelEtki(ref int oyuncuCan, ref int rakipCan) { }
@@ -196,7 +196,7 @@ namespace Duello
 
                 Console.Clear();
                 Console.WriteLine("2. Oyuncu hamlesini yapıyor...");
-                string oyuncu2Hamle = GizliHamleSec("i", "o", "p", "x");
+                string oyuncu2Hamle = GizliHamleSec("ı", "o", "p", "x");
                 if (oyuncu2Hamle == "x")
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -249,8 +249,8 @@ namespace Duello
         static bool HamleKarsiHamle(string hamle1, string hamle2)
         {
             return (hamle1 == "q" && hamle2 == "p") ||
-                   (hamle1 == "w" && hamle2 == "o") ||
-                   (hamle1 == "e" && hamle2 == "i");
+                   (hamle1 == "w" && hamle2 == "ı") ||
+                   (hamle1 == "e" && hamle2 == "o");
         }
 
         static Silah SilahSec(string oyuncu)
