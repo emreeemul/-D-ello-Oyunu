@@ -1,25 +1,29 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Media;
 
 namespace Duello
 {
     public abstract class Silah // Bu sınıf tüm silahlar için temel özellikleri ve davranışları sağlar.
-     // Soyutlama (Abstraction): Bu sınıf, tüm silahlar için temel özellikleri ve davranışları sağlar.
+
     {
         public string Ad { get; private set; } // Silahın adı, yalnızca sınıf içinde ayarlanabilir ve dışarıdan okunabilir. 
         public int Hasar { get; private set; }  // Silahın verdiği hasar miktarı. 
         public int Savunma { get; private set; } // Silahın sağladığı savunma miktarı.
 
-        public Silah(string ad, int hasar, int savunma)  
+        public Silah(string ad, int hasar, int savunma)
         {
             Ad = ad;
             Hasar = hasar;
             Savunma = savunma;
         }
+        public virtual void BilgiGoster()
+        {
+            Console.WriteLine($"Silah: {Ad}, Hasar: {Hasar}, Savunma: {Savunma}");
+        }
 
-       
-        ~Silah() 
+        ~Silah()
         {
             Console.WriteLine($"Silah {Ad} yok ediliyor...");
         }
@@ -27,8 +31,8 @@ namespace Duello
         public abstract void OzelEtki(ref int oyuncuCan, ref int rakipCan);
     }
 
-    public class Balta : Silah 
-    
+    public class Balta : Silah
+
     {
         public Balta() : base("Balta", 150, 0) { } // Balta sınıfı için varsayılan özellikler.
         public override void OzelEtki(ref int oyuncuCan, ref int rakipCan) { }
@@ -39,8 +43,8 @@ namespace Duello
         }
     }
 
-    public class IkiliKilic : Silah 
-    
+    public class IkiliKilic : Silah
+
     {
         private static Random rastgele = new Random();
         public IkiliKilic() : base("İkili Kılıç", 125, 0) { }     // İkili Kılıç sınıfı için varsayılan özellikler.
@@ -51,6 +55,7 @@ namespace Duello
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("İkili Kılıç: Hasardan kaçınıldı!");
                 Console.ResetColor();
+                oyuncuCan += 100; // Daha önce azaltılmış hasarı geri ekler
             }
         }
 
@@ -59,11 +64,11 @@ namespace Duello
             Console.WriteLine("İkili Kılıç yok ediliyor...");
         }
     }
+   
+    public class TopuzVeKalkan : Silah
 
-    public class TopuzVeKalkan : Silah 
-    
     {
-        public TopuzVeKalkan() : base("Topuz ve Kalkan", 100, 50) { } // Topuz ve Kalkan sınıfı için varsayılan özellikler.
+        public TopuzVeKalkan() : base("Topuz ve Kalkan", 75, 50) { } // Topuz ve Kalkan sınıfı için varsayılan özellikler.
         public override void OzelEtki(ref int oyuncuCan, ref int rakipCan) { }
 
         ~TopuzVeKalkan()
@@ -95,7 +100,8 @@ namespace Duello
             Console.WriteLine("1. Normal Mod");
             Console.WriteLine("2. Sonsuzluk Modu");
             Console.WriteLine("3. Co-op Modu");
-            Console.Write("Seçiminiz (1-3): ");
+            Console.WriteLine("4. /help (Yardım Komutu)");
+            Console.Write("Seçiminiz (1-4): ");
             int modSecim = int.Parse(Console.ReadLine());
 
             if (modSecim == 1)
@@ -109,6 +115,11 @@ namespace Duello
             else if (modSecim == 3)
             {
                 CoOpModu();
+            }
+            else if (modSecim == 4)
+            {
+                YardimKomutu();
+                OyunaBasla(); // Tekrar başlangıç ekranına dön
             }
             else
             {
@@ -228,6 +239,32 @@ namespace Duello
                 ZaferEkrani("1. Oyuncu");
             else
                 ZaferEkrani("2. Oyuncu");
+        }
+        static void YardimKomutu()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("********** YARDIM **********");
+            Console.ResetColor();
+            Console.WriteLine("Oyunun Temel Kuralları:");
+            Console.WriteLine("- Bir silah seçerek rakibinizle dövüşeceksiniz.");
+            Console.WriteLine("- Hamle yaparken 'q', 'w', 'e' tuşlarını kullanabilirsiniz.");
+            Console.WriteLine("- Rakibinizin hamlesini tahmin ederek doğru saldırıyı yapın.");
+            Console.WriteLine("- 'x' tuşuna basarak oyundan çıkabilirsiniz.");
+
+            Console.WriteLine("\nKomutlar:");
+            Console.WriteLine("- **/help**: Yardım menüsünü görüntüler.");
+            Console.WriteLine("- **Normal Mod**: Tek bir rakiple dövüş.");
+            Console.WriteLine("- **Sonsuzluk Modu**: Kazandıkça daha güçlü rakiplerle savaş.");
+            Console.WriteLine("- **Co-op Modu**: İki oyuncu arasında yerel dövüş.");
+
+            Console.WriteLine("\nSilah Özellikleri:");
+            Console.WriteLine("- **Balta**: Yüksek hasar verir.");
+            Console.WriteLine("- **İkili Kılıç**: %75 ihtimalle hasardan kaçınır.");
+            Console.WriteLine("- **Topuz ve Kalkan**: Savunma sayesinde daha az hasar alır.");
+
+            Console.WriteLine("\nDevam etmek için ENTER tuşuna basın...");
+            Console.ReadLine();
         }
 
         static string GizliHamleSec(string option1, string option2, string option3, string exitOption)
@@ -351,6 +388,20 @@ namespace Duello
             Console.WriteLine("********************************************");
             Console.WriteLine("🎉 Tebrikler! Rakibinizi mağlup ettiniz! 🎉");
             Console.ResetColor();
+            string ZaferSesiDosyasi = "zafer.wav"; // Ses dosyasını proje dizinine koyduysanız.
+            // Zafer sesi
+            try
+            {
+                using (SoundPlayer player = new SoundPlayer("sounds/zafer.wav"))
+                {
+                    player.PlaySync(); // Ses tamamlanana kadar bekler
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ResetColor();
+            }
         }
 
         static void YenilgiEkrani()
@@ -362,6 +413,21 @@ namespace Duello
             Console.WriteLine("********************************************");
             Console.WriteLine("😞 Bir dahaki sefere daha iyi şanslar! 😞");
             Console.ResetColor();
+            string yenilgiSesiDosyasi = "yenilgi.wav"; // Ses dosyasını proje dizinine koyduysanız.
+            // Yenilgi sesi
+            try
+            {
+                using (SoundPlayer player = new SoundPlayer("sounds/yenilgi.wav"))
+                {
+                    player.PlaySync(); // Ses tamamlanana kadar bekler
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+               ;
+                Console.ResetColor();
+            }
         }
     }
 }
